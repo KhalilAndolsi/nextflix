@@ -199,6 +199,10 @@ export interface Review {
   url: string;
 }
 
+export interface TmdbSearchResult extends Omit<TmdbResult, "media_type"> {
+  media_type: string;
+}
+
 export interface Episode {
   air_date: string;
   episode_number: number; // default: 0

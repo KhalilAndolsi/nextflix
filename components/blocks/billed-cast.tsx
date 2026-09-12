@@ -3,9 +3,10 @@ import React from "react";
 import dynamic from "next/dynamic";
 
 import { SwiperSlide } from "swiper/react";
+import { BilledCastSkeleton } from "./skeletons";
 const Swiper = dynamic(() => import("swiper/react").then((d) => d.Swiper), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => <BilledCastSkeleton />,
 });
 import "swiper/css";
 

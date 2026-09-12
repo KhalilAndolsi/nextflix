@@ -1,10 +1,10 @@
 import React from "react";
 import { streamingDetails } from "@/data/tmdb";
-import Cover from "@/components/blocks/cover";
+import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
 import { LinkIcon, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import ThumsSlide from "../../../../components/blocks/thums-slide";
+import ThumsSlide from "../../movies/_components/thums-slide";
 import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbTvDetails } from "@/types/tmdb";
@@ -27,11 +27,10 @@ export default async function SerieDetails({
     reviews,
   } = await streamingDetails("tv", Number(id));
   const data = results as TmdbTvDetails;
-
   return (
     <>
       <Cover info={data} type="tv" />
-      <SeriesStreamingController info={data} />
+      <SeriesStreamingController info={{...data, seasons: data.seasons.filter(s => s.season_number !== 0)}} />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <div className="mb-8">

@@ -22,9 +22,9 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             src={`https://image.tmdb.org/t/p/w500${info.poster_path}`}
             alt={info.title || info.name || "Movie poster"}
             fill
-            objectFit="cover"
+            // objectFit="cover"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
-            className="object-center -z-10 mask-b-from-30% group-hover:mask-b-from-0% transition-transform duration-300"
+            className="object-center object-cover -z-10 mask-b-from-30% group-hover:mask-b-from-0% transition-transform duration-300"
             quality={85}
           />
 

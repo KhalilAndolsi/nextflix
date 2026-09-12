@@ -1,11 +1,17 @@
-import BestSections from "@/components/blocks/best-sections";
-import HeroSection from "@/components/blocks/hero-section";
-import ThumsSlide from "@/components/blocks/thums-slide";
-import TopFive from "@/components/blocks/top-five";
+import BestSections from "@/app/(root)/movies/_components/best-sections";
+import HeroSection from "@/app/(root)/movies/_components/hero-section";
+import ThumsSlide from "@/app/(root)/movies/_components/thums-slide";
+import TopFive from "@/app/(root)/movies/_components/top-five";
 import { GENRES } from "@/constant";
 import { getDiscover, getPageData } from "@/data/tmdb";
 import { TmdbResult } from "@/types/tmdb";
 import React, { Suspense } from "react";
+import {
+  HeroSectionSkeleton,
+  ThumsSlideSkeleton,
+  TopFiveSkeleton,
+  BestSectionsSkeleton,
+} from "@/components/blocks/skeletons";
 
 export default async function SeriesPage() {
   const { trending, nowPlaying, popular, topRated, discover, upComing } =
@@ -16,10 +22,10 @@ export default async function SeriesPage() {
   const genreTwoData = await getDiscover("tv", genreTwo.id);
   return (
     <>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection data={discover} />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="long"
           title="Now Playing"
@@ -28,10 +34,10 @@ export default async function SeriesPage() {
           infos={nowPlaying}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<TopFiveSkeleton />}>
         <TopFive infos={topRated} type="tv" />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="short"
           title="Popular Series"
@@ -40,7 +46,7 @@ export default async function SeriesPage() {
           infos={popular}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="long"
           title="Trending"
@@ -49,7 +55,7 @@ export default async function SeriesPage() {
           infos={trending}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<BestSectionsSkeleton />}>
         <BestSections
           main={upComing}
           mainType="tv"

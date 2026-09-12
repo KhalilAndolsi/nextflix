@@ -42,10 +42,10 @@ export default function HeroSection({ data }: { data: TmdbResult[] }) {
                 src={`https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${info.backdrop_path}`}
                 alt={info.title || info.name || "Movie backdrop"}
                 fill
-                objectFit="cover"
+                // objectFit="cover"
                 priority={i === 0} // Priority loading for first slide
                 sizes="100vw"
-                className="object-center -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
+                className="object-center object-cover -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
                 quality={85}
               />
               <div className="size-full flex flex-col justify-end gap-2.5 md:gap-4 px-4 md:px-14 py-8 relative z-10">

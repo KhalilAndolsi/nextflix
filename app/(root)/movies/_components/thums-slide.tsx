@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import ThumCard from "@/components/blocks/thum-card";
+import ThumCard from "@/app/(root)/movies/_components/thum-card";
 import { TmdbResult } from "@/types/tmdb";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
@@ -12,9 +12,10 @@ import {
 
 import dynamic from "next/dynamic";
 import { SwiperSlide } from "swiper/react";
+import { ThumsSlideSkeleton } from "@/components/blocks/skeletons";
 const Swiper = dynamic(() => import("swiper/react").then((d) => d.Swiper), {
   ssr: false,
-  loading: () => <div>Loading...</div>
+  loading: () => <ThumsSlideSkeleton />
 })
 import "swiper/css";
 

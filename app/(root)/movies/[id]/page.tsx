@@ -1,10 +1,10 @@
 import React from "react";
 import { streamingDetails } from "@/data/tmdb";
-import Cover from "@/components/blocks/cover";
+import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
 import { LinkIcon, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import ThumsSlide from "../../../../components/blocks/thums-slide";
+import ThumsSlide from "../_components/thums-slide";
 import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbMovieDetails } from "@/types/tmdb";
@@ -24,7 +24,7 @@ export default async function MovieDetails({
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <iframe
-            src={`https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`}
+            src={`https://embedmaster.link/movie/${id}`}
             className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
             style={{ backgroundSize: 100 }}
             allowFullScreen

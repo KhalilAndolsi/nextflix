@@ -1,9 +1,10 @@
 "use client";
 import dynamic from "next/dynamic";
 import { SwiperSlide } from "swiper/react";
+import { AutoSwiperSkeleton } from "../blocks/skeletons";
 const Swiper = dynamic(() => import("swiper/react").then((d) => d.Swiper), {
   ssr: false,
-  loading: () => <div>Loading...</div>,
+  loading: () => <AutoSwiperSkeleton />,
 });
 import "swiper/css";
 

@@ -1,13 +1,15 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useState, Suspense } from "react";
 import Link from "next/link";
 import { ArrowBigUp, Menu, Search } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
+import SearchOverlay from "@/components/features/search-overlay";
 
 export default function Header() {
   const [showUpBtn, setShowUpBtn] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   // Solution 1: Use useCallback to stabilize the function reference
   const watchScrollEvent = useCallback(() => {
@@ -32,6 +34,7 @@ export default function Header() {
   };
 
   return (
+    <>
     <header className="flex items-center max-lg:justify-between gap-14 px-4 lg:px-14 py-3 absolute w-full z-50">
       <Link href="/">
         <Image
@@ -54,6 +57,7 @@ export default function Header() {
         <button
           aria-label="search button"
           type="button"
+          onClick={() => setSearchOpen(true)}
           className={`${buttonVariants({ size: "icon", variant: "ghost" })}`}>
           <Search />
         </button>
@@ -69,6 +73,7 @@ export default function Header() {
         <button
           aria-label="search button"
           type="button"
+          onClick={() => setSearchOpen(true)}
           className={`${buttonVariants({ size: "icon", variant: "ghost" })}`}>
           <Search />
         </button>
@@ -89,6 +94,10 @@ export default function Header() {
         <ArrowBigUp className="fill-current" />
       </Button>
     </header>
+    <Suspense fallback={null}>
+      <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
+    </Suspense>
+    </>
   );
 }
 const headerLinks = [

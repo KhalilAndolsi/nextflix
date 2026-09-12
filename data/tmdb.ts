@@ -7,6 +7,7 @@ import {
   Review,
   TmdbMovieDetails,
   TmdbResult,
+  TmdbSearchResult,
   TmdbTvDetails,
   Video,
 } from "@/types/tmdb";
@@ -174,4 +175,15 @@ export const getEpisodes = async (serie_id: number, season_number: number) => {
     data: { episodes },
   } = await http.get(`/3/tv/${serie_id}/season/${season_number}`);
   return episodes as Episode[]
+};
+
+export const searchMulti = async (query: string) => {
+  const data = (
+    await http.get(
+      `/3/search/multi?query=${encodeURIComponent(query)}&include_adult=false`
+    )
+  ).data.results as TmdbSearchResult[];
+  return data.filter(
+    (d): d is TmdbResult => d.media_type === "movie" || d.media_type === "tv"
+  );
 };

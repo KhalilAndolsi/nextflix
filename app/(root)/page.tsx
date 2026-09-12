@@ -1,10 +1,16 @@
 
-import HeroSection from "../../components/blocks/hero-section";
+import HeroSection from "./movies/_components/hero-section";
 import { getLandingPageData } from "@/data/tmdb";
 import { Suspense } from "react";
-import ThumsSlide from "../../components/blocks/thums-slide";
-import TopFive from "@/components/blocks/top-five";
-import BestSections from "../../components/blocks/best-sections";
+import ThumsSlide from "./movies/_components/thums-slide";
+import TopFive from "@/app/(root)/movies/_components/top-five";
+import BestSections from "./movies/_components/best-sections";
+import {
+  HeroSectionSkeleton,
+  ThumsSlideSkeleton,
+  TopFiveSkeleton,
+  BestSectionsSkeleton,
+} from "@/components/blocks/skeletons";
 
 export default async function HomePage() {
   const {
@@ -21,7 +27,7 @@ export default async function HomePage() {
   // console.dir(popularSeries, {depth: 'infinity'})
   return (
     <>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection data={cover} />
       </Suspense>
       {/* <InfiniteSlider
@@ -44,7 +50,7 @@ export default async function HomePage() {
         ))}
       </InfiniteSlider>*/}
       {/*//TODO: fix InfiniteSlider Problem  */}
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="long"
           title="Movies Now Playing"
@@ -53,7 +59,7 @@ export default async function HomePage() {
           infos={moviesNowPlaying}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="long"
           title="Discover Series"
@@ -62,10 +68,10 @@ export default async function HomePage() {
           infos={discover}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<TopFiveSkeleton />}>
         <TopFive infos={popular} />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="short"
           title="Movies"
@@ -74,7 +80,7 @@ export default async function HomePage() {
           infos={popularMovies}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="short"
           title="Series"
@@ -83,7 +89,7 @@ export default async function HomePage() {
           infos={popularSeries}
         />
       </Suspense>
-      <Suspense fallback={<div>loading...</div>}>
+      <Suspense fallback={<BestSectionsSkeleton />}>
         <BestSections
           main={upComingMovies}
           mainType="movie"

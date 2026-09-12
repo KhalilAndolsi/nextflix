@@ -1,10 +1,10 @@
 import { TmdbMovieDetails, TmdbTvDetails, Video } from "@/types/tmdb";
 import Image from "next/image";
 import React from "react";
-import { Badge } from "../ui/badge";
+import { Badge } from "../../../../components/ui/badge";
 import { BookMarked, Star } from "lucide-react";
-import { Button } from "../ui/button";
-import TrailerPopupButton from "../features/trailer-popup-button";
+import { Button } from "../../../../components/ui/button";
+import TrailerPopupButton from "../../../../components/features/trailer-popup-button";
 import { getVideos } from "@/data/tmdb";
 
 export default async function Cover({
@@ -25,9 +25,9 @@ export default async function Cover({
         src={`https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${info.backdrop_path}`}
         alt="backdrop"
         fill
-        objectFit="cover"
+        // objectFit="cover"
         sizes="100vw"
-        className="object-left md:object-bottom -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
+        className="object-left object-cover md:object-bottom -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
         quality={85}
       />
       <div className="size-full flex flex-col items-center justify-end md:justify-start gap-2 md:flex-row md:items-end md:gap-5 px-4 md:px-14 py-8 relative z-10">

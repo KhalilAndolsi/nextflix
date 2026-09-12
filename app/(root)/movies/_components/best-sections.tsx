@@ -12,7 +12,7 @@ import {
   Star,
 } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
-import ThumCard from "@/components/blocks/thum-card";
+import ThumCard from "@/app/(root)/movies/_components/thum-card";
 
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation, EffectFade } from "swiper/modules";
@@ -92,9 +92,9 @@ export default function BestSections({
                   <Image
                     src={`https://image.tmdb.org/t/p/w500${info.backdrop_path}`}
                     fill
-                    objectFit="cover"
+                    // objectFit="cover"
                     alt="movie-cover"
-                    className="-z-10 size-full mask-b-from-10% rounded-xl"
+                    className="-z-10 size-full object-cover mask-b-from-10% rounded-xl"
                   />
                   <div className="p-4 h-full flex flex-col items-start justify-end gap-2">
                     <Badge>{mainType === "movie" ? "Movie" : "Serie"}</Badge>
