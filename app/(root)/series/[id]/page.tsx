@@ -1,5 +1,6 @@
+import type { Metadata } from "next";
 import React from "react";
-import { streamingDetails } from "@/data/tmdb";
+import { getData, streamingDetails } from "@/data/tmdb";
 import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
 import { LinkIcon, Star } from "lucide-react";
@@ -9,6 +10,47 @@ import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbTvDetails } from "@/types/tmdb";
 import SeriesStreamingController from "../_components/blocks/series-streaming-controller";
+import { SITE_URL, TMDB_IMAGE_BASE_URL } from "@/lib/site";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const data = (await getData("tv", Number(id))) as TmdbTvDetails;
+    const title = data.name || data.title;
+    const description =
+      data.tagline || (data.overview ? data.overview.slice(0, 160) : undefined);
+    const image = data.backdrop_path || data.poster_path
+      ? `${TMDB_IMAGE_BASE_URL}/w1280${data.backdrop_path || data.poster_path}`
+      : `${SITE_URL}/assets/images/logo.png`;
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `/series/${id}`,
+      },
+      openGraph: {
+        type: "video.tv_show",
+        url: `${SITE_URL}/series/${id}`,
+        siteName: "Nextflix",
+        title,
+        description,
+        images: [{ url: image, width: 1280, height: 720, alt: title }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [image],
+      },
+    };
+  } catch {
+    return {};
+  }
+}
 
 
 export default async function SerieDetails({
@@ -27,9 +69,56 @@ export default async function SerieDetails({
     reviews,
   } = await streamingDetails("tv", Number(id));
   const data = results as TmdbTvDetails;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "TVSeries",
+    name: data.name || data.title,
+    alternateName: data.original_name || data.original_title,
+    url: `${SITE_URL}/series/${id}`,
+    image: data.backdrop_path
+      ? `${TMDB_IMAGE_BASE_URL}/w1280${data.backdrop_path}`
+      : undefined,
+    description: data.overview,
+    startDate: data.first_air_date || undefined,
+    endDate: data.last_air_date || undefined,
+    genre: data.genres?.map((genre) => genre.name) || undefined,
+    numberOfSeasons: data.number_of_seasons || undefined,
+    numberOfEpisodes: data.number_of_episodes || undefined,
+    season:
+      data.seasons?.map((season) => ({
+        "@type": "TVSeason",
+        name: season.name,
+        seasonNumber: season.season_number,
+        numberOfEpisodes: season.episode_count,
+        datePublished: season.air_date || undefined,
+      })) || undefined,
+    productionCompany:
+      data.production_companies?.map((company) => company.name) || undefined,
+    aggregateRating:
+      data.vote_count > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: data.vote_average,
+            ratingCount: data.vote_count,
+            bestRating: 10,
+          }
+        : undefined,
+    actor:
+      credits.cast.length > 0
+        ? credits.cast.slice(0, 10).map((cast) => ({
+            "@type": "Person",
+            name: cast.name,
+            characterName: cast.character,
+          }))
+        : undefined,
+  };
   return (
     <>
       <Cover info={data} type="tv" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <SeriesStreamingController info={{...data, seasons: data.seasons.filter(s => s.season_number !== 0)}} />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">

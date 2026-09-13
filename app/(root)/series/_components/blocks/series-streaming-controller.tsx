@@ -18,7 +18,6 @@ export default function SeriesStreamingController({
 }: {
   info: TmdbTvDetails;
 }) {
-  const [switchOtherEmbedService, setSwitchOtherEmbedService] = useState(false);
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [season, setSeason] = useQueryState(
     "s",

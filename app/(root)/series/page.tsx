@@ -1,10 +1,10 @@
+import type { Metadata } from "next";
 import BestSections from "@/app/(root)/movies/_components/best-sections";
 import HeroSection from "@/app/(root)/movies/_components/hero-section";
 import ThumsSlide from "@/app/(root)/movies/_components/thums-slide";
 import TopFive from "@/app/(root)/movies/_components/top-five";
 import { GENRES } from "@/constant";
 import { getDiscover, getPageData } from "@/data/tmdb";
-import { TmdbResult } from "@/types/tmdb";
 import React, { Suspense } from "react";
 import {
   HeroSectionSkeleton,
@@ -12,6 +12,23 @@ import {
   TopFiveSkeleton,
   BestSectionsSkeleton,
 } from "@/components/blocks/skeletons";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Series",
+  description:
+    "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows plus series currently on the air.",
+  alternates: {
+    canonical: "/series",
+  },
+  openGraph: {
+    type: "website",
+    title: "Series | Nextflix",
+    description:
+      "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows.",
+    images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+  },
+};
 
 export default async function SeriesPage() {
   const { trending, nowPlaying, popular, topRated, discover, upComing } =

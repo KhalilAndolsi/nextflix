@@ -1,5 +1,6 @@
+import type { Metadata } from "next";
 import React from "react";
-import { streamingDetails } from "@/data/tmdb";
+import { getData, streamingDetails } from "@/data/tmdb";
 import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
 import { LinkIcon, Star } from "lucide-react";
@@ -8,6 +9,47 @@ import ThumsSlide from "../_components/thums-slide";
 import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbMovieDetails } from "@/types/tmdb";
+import { SITE_URL, TMDB_IMAGE_BASE_URL } from "@/lib/site";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}): Promise<Metadata> {
+  const { id } = await params;
+  try {
+    const data = (await getData("movie", Number(id))) as TmdbMovieDetails;
+    const title = data.title || data.name;
+    const description =
+      data.tagline || (data.overview ? data.overview.slice(0, 160) : undefined);
+    const image = data.backdrop_path || data.poster_path
+      ? `${TMDB_IMAGE_BASE_URL}/w1280${data.backdrop_path || data.poster_path}`
+      : `${SITE_URL}/assets/images/logo.png`;
+    return {
+      title,
+      description,
+      alternates: {
+        canonical: `/movies/${id}`,
+      },
+      openGraph: {
+        type: "video.movie",
+        url: `${SITE_URL}/movies/${id}`,
+        siteName: "Nextflix",
+        title,
+        description,
+        images: [{ url: image, width: 1280, height: 720, alt: title }],
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: [image],
+      },
+    };
+  } catch {
+    return {};
+  }
+}
 
 export default async function MovieDetails({
   params,
@@ -18,9 +60,46 @@ export default async function MovieDetails({
   const { data: results, credits, keywords, recommendations, similar, images, reviews } =
     await streamingDetails("movie", Number(id));
   const data = results as TmdbMovieDetails;
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Movie",
+    name: data.title || data.name,
+    alternateName: data.original_title || data.original_name,
+    url: `${SITE_URL}/movies/${id}`,
+    image: data.backdrop_path
+      ? `${TMDB_IMAGE_BASE_URL}/w1280${data.backdrop_path}`
+      : undefined,
+    description: data.overview,
+    datePublished: data.release_date || undefined,
+    genre: data.genres?.map((genre) => genre.name) || undefined,
+    duration: data.runtime ? `PT${data.runtime}M` : undefined,
+    productionCompany:
+      data.production_companies?.map((company) => company.name) || undefined,
+    aggregateRating:
+      data.vote_count > 0
+        ? {
+            "@type": "AggregateRating",
+            ratingValue: data.vote_average,
+            ratingCount: data.vote_count,
+            bestRating: 10,
+          }
+        : undefined,
+    actor:
+      credits.cast.length > 0
+        ? credits.cast.slice(0, 10).map((cast) => ({
+            "@type": "Person",
+            name: cast.name,
+            characterName: cast.character,
+          }))
+        : undefined,
+  };
   return (
     <>
       <Cover info={data} type="movie" />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <iframe

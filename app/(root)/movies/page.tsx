@@ -1,3 +1,4 @@
+import type { Metadata } from "next";
 import BestSections from "@/app/(root)/movies/_components/best-sections";
 import HeroSection from "@/app/(root)/movies/_components/hero-section";
 import ThumsSlide from "@/app/(root)/movies/_components/thums-slide";
@@ -12,6 +13,23 @@ import {
   TopFiveSkeleton,
   BestSectionsSkeleton,
 } from "@/components/blocks/skeletons";
+import { SITE_URL } from "@/lib/site";
+
+export const metadata: Metadata = {
+  title: "Movies",
+  description:
+    "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films plus upcoming releases.",
+  alternates: {
+    canonical: "/movies",
+  },
+  openGraph: {
+    type: "website",
+    title: "Movies | Nextflix",
+    description:
+      "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films.",
+    images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+  },
+};
 
 export default async function MoviesPage() {
   const {trending, nowPlaying, popular, topRated, discover, upComing} = await getPageData("movie");
