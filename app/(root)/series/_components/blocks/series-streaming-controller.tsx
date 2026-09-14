@@ -52,7 +52,7 @@ export default function SeriesStreamingController({
     <div className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3 mb-5">
       <div className="col-span-full lg:col-span-9">
         <iframe
-          src={`https://embedmaster.link/tv/${info.id}/${season}/${episode}`}
+          src={`https://embedmaster.link/v2kuqe45ne6onejhmq/tv/${info.id}/${season}/${episode}`}
           className="w-full aspect-video mx-auto rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
           style={{ backgroundSize: 100 }}
           allow="autoplay *; fullscreen *; picture-in-picture *; encrypted-media *"
