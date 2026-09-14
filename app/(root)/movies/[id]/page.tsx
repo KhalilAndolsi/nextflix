@@ -103,7 +103,7 @@ export default async function MovieDetails({
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <iframe
-            src={`https://embedmaster.link/movie/${id}`}
+            src={`https://embedmaster.link/v2kuqe45ne6onejhmq/movie/${id}`}
             className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
             style={{ backgroundSize: 100 }}
             allowFullScreen
