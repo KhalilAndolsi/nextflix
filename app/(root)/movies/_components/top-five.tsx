@@ -7,6 +7,7 @@ import "swiper/css";
 import Image from "next/image";
 import { Star } from "lucide-react";
 import Link from "next/link";
+import { BLUR_POSTER } from "@/lib/blur";
 
 export default function TopFive({
   infos,
@@ -53,6 +54,8 @@ export default function TopFive({
                 width={80}
                 height={140}
                 alt="Cover"
+                placeholder="blur"
+                blurDataURL={BLUR_POSTER}
                 className="w-[100px] h-auto aspect-[2/3] rounded-xl flex-shrink-0"
               />
               <div className="p-4 flex flex-col justify-end flex-1 min-w-0">

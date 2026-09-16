@@ -8,6 +8,7 @@ import { LinkIcon, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ThumsSlide from "../../movies/_components/thums-slide";
 import Image from "next/image";
+import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbTvDetails } from "@/types/tmdb";
 import SeriesStreamingController from "../_components/blocks/series-streaming-controller";
@@ -155,6 +156,8 @@ export default async function SerieDetails({
                           width={40}
                           height={40}
                           alt="pfp"
+                          placeholder="blur"
+                          blurDataURL={BLUR_POSTER}
                           className="bg-primary rounded-full"
                         />
                         <p className="flex flex-col">
@@ -200,6 +203,8 @@ export default async function SerieDetails({
                   width={image.width}
                   height={image.height}
                   alt="Backdrops"
+                  placeholder="blur"
+                  blurDataURL={BLUR_BACKDROP}
                   className="object-cover"
                 />
               ))}
@@ -216,6 +221,8 @@ export default async function SerieDetails({
                   width={image.width}
                   height={image.height}
                   alt="Backdrops"
+                  placeholder="blur"
+                  blurDataURL={BLUR_POSTER}
                   className="object-cover"
                 />
               ))}

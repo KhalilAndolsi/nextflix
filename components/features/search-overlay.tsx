@@ -5,6 +5,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, Star, X } from "lucide-react";
 import { SearchResultsSkeleton } from "@/components/blocks/skeletons";
+import { BLUR_POSTER } from "@/lib/blur";
 import { parseAsString, useQueryState } from "nuqs";
 import { useScrollLock } from "usehooks-ts";
 import {
@@ -218,6 +219,8 @@ function SearchResultRow({
           width={48}
           height={72}
           alt=""
+          placeholder="blur"
+          blurDataURL={BLUR_POSTER}
           className="w-12 h-[72px] object-cover rounded-md shrink-0"
         />
       ) : (

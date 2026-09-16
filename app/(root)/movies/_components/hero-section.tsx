@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { BLUR_BACKDROP } from "@/lib/blur";
 import { Badge } from "@/components/ui/badge";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { BookMarked, CirclePlay, Star } from "lucide-react";
@@ -45,6 +46,8 @@ export default function HeroSection({ data }: { data: TmdbResult[] }) {
                 // objectFit="cover"
                 priority={i === 0} // Priority loading for first slide
                 sizes="100vw"
+                placeholder="blur"
+                blurDataURL={BLUR_BACKDROP}
                 className="object-center object-cover -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
                 quality={85}
               />

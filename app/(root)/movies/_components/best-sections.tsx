@@ -2,6 +2,7 @@
 import React, { useMemo } from "react";
 import { TmdbResult } from "@/types/tmdb";
 import Image from "next/image";
+import { BLUR_BACKDROP } from "@/lib/blur";
 import { Badge } from "@/components/ui/badge";
 import { getGenre } from "@/utils/getGenre";
 import {
@@ -94,6 +95,8 @@ export default function BestSections({
                     fill
                     // objectFit="cover"
                     alt="movie-cover"
+                    placeholder="blur"
+                    blurDataURL={BLUR_BACKDROP}
                     className="-z-10 size-full object-cover mask-b-from-10% rounded-xl"
                   />
                   <div className="p-4 h-full flex flex-col items-start justify-end gap-2">
@@ -115,7 +118,7 @@ export default function BestSections({
                     </p>
                     <p className="line-clamp-2 max-w-md">{info.overview}</p>
                     <div className="flex max-sm:justify-center gap-4 mt-5">
-                      <Link href={`/${mainType}/${info.id}`} className={buttonVariants()} >
+                      <Link href={`/${mainType === "movie" ? "movies" : "series"}/${info.id}`} className={buttonVariants()} >
                         <CirclePlay /> Watch Now
                       </Link>
                       <Button variant="outline">

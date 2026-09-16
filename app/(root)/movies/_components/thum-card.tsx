@@ -4,6 +4,7 @@ import { PlayCircle, Star } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
+import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 
 type ThumCardProps = {
   varient: "long" | "short" | "shortest";
@@ -24,6 +25,8 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             fill
             // objectFit="cover"
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            placeholder="blur"
+            blurDataURL={BLUR_POSTER}
             className="object-center object-cover -z-10 mask-b-from-30% group-hover:mask-b-from-0% transition-transform duration-300"
             quality={85}
           />
@@ -61,6 +64,8 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             width={140}
             height={80}
             alt={`${info.title || info.name} backdrop`}
+            placeholder="blur"
+            blurDataURL={BLUR_BACKDROP}
             className="object-cover object-center w-full aspect-video rounded-xl group-hover:mask-b-from-1 transition-all duration-300"
           />
           <div className="p-2">
@@ -93,6 +98,8 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             width={80}
             height={160}
             alt={`${info.title || info.name} poster`}
+            placeholder="blur"
+            blurDataURL={BLUR_POSTER}
             className="object-cover object-center h-full rounded-xl"
           />
           <div className="px-2">

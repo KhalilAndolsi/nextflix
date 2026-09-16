@@ -8,6 +8,7 @@ import { LinkIcon, Star } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import ThumsSlide from "../_components/thums-slide";
 import Image from "next/image";
+import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbMovieDetails } from "@/types/tmdb";
 import WatchRequired from "@/components/features/watch-required";
@@ -141,6 +142,8 @@ export default async function MovieDetails({
                           width={40}
                           height={40}
                           alt="pfp"
+                          placeholder="blur"
+                          blurDataURL={BLUR_POSTER}
                           className="bg-primary rounded-full"
                         />
                         <p className="flex flex-col">
@@ -184,6 +187,8 @@ export default async function MovieDetails({
                   width={image.width}
                   height={image.height}
                   alt="Backdrops"
+                  placeholder="blur"
+                  blurDataURL={BLUR_BACKDROP}
                   className="object-cover"
                 />
               ))}
@@ -200,6 +205,8 @@ export default async function MovieDetails({
                   width={image.width}
                   height={image.height}
                   alt="Backdrops"
+                  placeholder="blur"
+                  blurDataURL={BLUR_POSTER}
                   className="object-cover"
                 />
               ))}

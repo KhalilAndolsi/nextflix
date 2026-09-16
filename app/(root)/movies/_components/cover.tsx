@@ -10,6 +10,7 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 import { prisma } from "@/lib/prisma";
 import { MediaKind } from "@/generated/prisma/enums";
+import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 
 export default async function Cover({
   info,
@@ -64,6 +65,8 @@ export default async function Cover({
         fill
         // objectFit="cover"
         sizes="100vw"
+        placeholder="blur"
+        blurDataURL={BLUR_BACKDROP}
         className="object-left object-cover md:object-bottom -z-10 mask-t-from-30% mask-b-from-50% mask-b-to-98%"
         quality={85}
       />
@@ -73,6 +76,8 @@ export default async function Cover({
           width={150}
           height={250}
           alt={`${info.title || info.name} poster`}
+          placeholder="blur"
+          blurDataURL={BLUR_POSTER}
           className="!w-36 md:!w-60 xl:!w-70 aspect-2/3 rounded-xl shadow-[0_0_25px_2px_black]"
         />
         <div className="flex flex-col justify-end gap-2.5 md:gap-4">

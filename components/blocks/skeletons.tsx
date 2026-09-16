@@ -38,6 +38,24 @@ export function HeroSectionSkeleton() {
   );
 }
 
+export function ContinueWatchingSkeleton() {
+  return (
+    <section className="relative px-4 lg:px-14 mt-10 overflow-hidden">
+      <div className="mb-4">
+        <Skeleton className="h-7 w-48 md:h-8" />
+      </div>
+      <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+        {Array.from({ length: 6 }).map((_, i) => (
+          <div key={i} className="grid gap-2 min-w-0">
+            <Skeleton className="aspect-[2/3] w-full rounded-xl" />
+            <Skeleton className="h-4 w-3/4" />
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 export function TopFiveSkeleton() {
   return (
     <section className="relative px-4 lg:px-14 overflow-hidden mt-8">
@@ -143,7 +161,7 @@ export function BilledCastSkeleton() {
       </p>
       <div className="grid grid-cols-3 sm:grid-cols-4 lg:grid-cols-6 xl:grid-cols-8 gap-2.5">
         {Array.from({ length: 8 }).map((_, i) => (
-          <div key={i} className="grid gap-1.5 overflow-hidden rounded-xl bg-primary/20 p-2">
+          <div key={i} className="grid gap-1.5 overflow-hidden rounded-xl bg-foreground/5 p-2">
             <Skeleton className="aspect-[2/3] w-full rounded-lg" />
             <Skeleton className="h-4 w-3/4" />
             <Skeleton className="h-3 w-1/2" />

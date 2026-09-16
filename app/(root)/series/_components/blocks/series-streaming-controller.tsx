@@ -17,6 +17,7 @@ import { ArrowUpDown, SkipBack, SkipForward } from "lucide-react";
 import { cn } from "@/lib/utils";
 import WatchRequired from "@/components/features/watch-required";
 import TrackPlay from "@/components/features/track-play";
+import { BLUR_BACKDROP } from "@/lib/blur";
 
 export default function SeriesStreamingController({
   info,
@@ -223,6 +224,8 @@ export default function SeriesStreamingController({
                   src={`https://image.tmdb.org/t/p/w500${ep.still_path}`}
                   width={120}
                   height={60}
+                  placeholder="blur"
+                  blurDataURL={BLUR_BACKDROP}
                   className="w-[100px] h-auto aspect-video object-cover rounded-lg"
                   alt={ep.name}
                 />

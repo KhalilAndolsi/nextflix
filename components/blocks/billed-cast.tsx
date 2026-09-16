@@ -12,6 +12,7 @@ import "swiper/css";
 
 import { CastMember } from "@/types/tmdb";
 import Image from "next/image";
+import { BLUR_POSTER } from "@/lib/blur";
 import { Separator } from "../ui/separator";
 
 export default function BilledCast({ casts }: { casts: CastMember[] }) {
@@ -50,6 +51,8 @@ export default function BilledCast({ casts }: { casts: CastMember[] }) {
                   alt={cast.name}
                   width={100}
                   height={200}
+                  placeholder="blur"
+                  blurDataURL={BLUR_POSTER}
                   className=" max-h-[150px] w-full object-cover group-hover:scale-90 origin-[50%_30%] transition-all group-hover:rounded-lg"
                 />
                 <p className="px-4 py-2 *:block *:truncate">

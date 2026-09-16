@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { BLUR_BACKDROP } from "@/lib/blur";
 
 export default function AuthLayout({
   children,
@@ -23,6 +24,8 @@ export default function AuthLayout({
               width={120}
               height={55}
               alt="Nextflix"
+              placeholder="blur"
+              blurDataURL={BLUR_BACKDROP}
               className="h-12 w-auto"
               draggable={false}
             />

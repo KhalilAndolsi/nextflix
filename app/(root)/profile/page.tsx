@@ -17,6 +17,7 @@ import { Badge } from "@/components/ui/badge";
 import { auth } from "@/lib/auth";
 import { prisma } from "@/lib/prisma";
 import { getData } from "@/data/tmdb";
+import { BLUR_POSTER } from "@/lib/blur";
 import { MediaKind } from "@/generated/prisma/enums";
 import type { TmdbMovieDetails, TmdbTvDetails } from "@/types/tmdb";
 import DeleteAccountButton from "@/components/features/delete-account-button";
@@ -67,6 +68,8 @@ function LibraryCard({ item }: { item: ProfileMedia }) {
             src={`https://image.tmdb.org/t/p/w500${item.posterPath}`}
             alt={item.title}
             fill
+            placeholder="blur"
+            blurDataURL={BLUR_POSTER}
             sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 20vw"
             className="object-cover"
             quality={85}
@@ -237,6 +240,8 @@ export default async function ProfilePage() {
                         alt={user.name}
                         width={64}
                         height={64}
+                        placeholder="blur"
+                        blurDataURL={BLUR_POSTER}
                         className="size-full object-cover"
                         draggable={false}
                       />

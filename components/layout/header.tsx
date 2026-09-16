@@ -16,6 +16,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { useRouter } from "next/navigation";
 import { signOut, useSession } from "@/lib/auth-client";
+import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 
 export default function Header() {
   const router = useRouter();
@@ -62,6 +63,8 @@ export default function Header() {
             width={120}
             height={55}
             alt="logo"
+            placeholder="blur"
+            blurDataURL={BLUR_BACKDROP}
             className="w-auto h-14"
             draggable={false}
           />
@@ -87,7 +90,7 @@ export default function Header() {
             <Search />
           </button>
           <Separator orientation="vertical" className="h-[25px!important]" />
-          <DropdownMenu>
+          <DropdownMenu modal={false}>
             <DropdownMenuTrigger asChild>
               <Button
                 size={"icon"}
@@ -101,6 +104,8 @@ export default function Header() {
                       alt={session.user.name}
                       width={36}
                       height={36}
+                      placeholder="blur"
+                      blurDataURL={BLUR_POSTER}
                       className="size-9 rounded-full object-cover"
                       draggable={false}
                     />
