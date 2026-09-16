@@ -1,24 +1,61 @@
-import { TmdbMovieDetails, TmdbTvDetails, Video } from "@/types/tmdb";
+import { TmdbMovieDetails, TmdbTvDetails } from "@/types/tmdb";
 import Image from "next/image";
 import React from "react";
 import { Badge } from "../../../../components/ui/badge";
-import { BookMarked, Star } from "lucide-react";
-import { Button } from "../../../../components/ui/button";
+import { Star } from "lucide-react";
 import TrailerPopupButton from "../../../../components/features/trailer-popup-button";
+import LibraryButton from "@/components/features/library-button";
 import { getVideos } from "@/data/tmdb";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
+import { prisma } from "@/lib/prisma";
+import { MediaKind } from "@/generated/prisma/enums";
 
 export default async function Cover({
   info,
   type,
+  backTo,
 }: {
   info: TmdbMovieDetails | TmdbTvDetails;
   type: "movie" | "tv";
+  backTo: string;
 }) {
   const getYear = (date: string) => {
     return new Date(date).getFullYear() || new Date().getFullYear();
   };
   const videos = await getVideos(type, info.id);
   const trailers = videos.filter(v => v.type === "Trailer")
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+  let inWatchlist = false;
+  let inFavorites = false;
+  if (session) {
+    const [watchlist, favorite] = await Promise.all([
+      prisma.userMedia.findUnique({
+        where: {
+          userId_mediaType_mediaId_kind: {
+            userId: session.user.id,
+            mediaType: type,
+            mediaId: info.id,
+            kind: MediaKind.WATCHLIST,
+          },
+        },
+      }),
+      prisma.userMedia.findUnique({
+        where: {
+          userId_mediaType_mediaId_kind: {
+            userId: session.user.id,
+            mediaType: type,
+            mediaId: info.id,
+            kind: MediaKind.FAVORITE,
+          },
+        },
+      }),
+    ]);
+    inWatchlist = !!watchlist;
+    inFavorites = !!favorite;
+  }
   return (
     <section className="relative h-[70vh] max-h-[550px] transition-all duration-500 mb-8">
       <Image
@@ -55,9 +92,20 @@ export default async function Cover({
           <p className="max-w-2xl line-clamp-2">{info.overview}</p>
           <div className="flex max-sm:justify-center gap-4">
             <TrailerPopupButton trailers={trailers} />
-            <Button variant="outline">
-              <BookMarked /> Add Watchlist
-            </Button>
+            <LibraryButton
+              mediaId={info.id}
+              mediaType={type}
+              kind="WATCHLIST"
+              initialActive={inWatchlist}
+              backTo={backTo}
+            />
+            <LibraryButton
+              mediaId={info.id}
+              mediaType={type}
+              kind="FAVORITE"
+              initialActive={inFavorites}
+              backTo={backTo}
+            />
           </div>
         </div>
       </div>

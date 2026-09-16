@@ -16,6 +16,10 @@ const nextConfig: NextConfig = {
         hostname: "api.dicebear.com",
         protocol: "https",
       },
+      {
+        hostname: "lh3.googleusercontent.com",
+        protocol: "https",
+      },
     ],
   },
 };

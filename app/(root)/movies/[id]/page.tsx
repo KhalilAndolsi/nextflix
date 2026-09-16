@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import { headers } from "next/headers";
 import { getData, streamingDetails } from "@/data/tmdb";
 import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
@@ -9,6 +10,9 @@ import ThumsSlide from "../_components/thums-slide";
 import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbMovieDetails } from "@/types/tmdb";
+import WatchRequired from "@/components/features/watch-required";
+import TrackPlay from "@/components/features/track-play";
+import { auth } from "@/lib/auth";
 import { SITE_URL, TMDB_IMAGE_BASE_URL } from "@/lib/site";
 
 export async function generateMetadata({
@@ -60,6 +64,9 @@ export default async function MovieDetails({
   const { data: results, credits, keywords, recommendations, similar, images, reviews } =
     await streamingDetails("movie", Number(id));
   const data = results as TmdbMovieDetails;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -95,19 +102,26 @@ export default async function MovieDetails({
   };
   return (
     <>
-      <Cover info={data} type="movie" />
+      <Cover info={data} type="movie" backTo={`/movies/${id}`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
-          <iframe
-            src={`https://embedmaster.link/v2kuqe45ne6onejhmq/movie/${id}`}
-            className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
-            style={{ backgroundSize: 100 }}
-            allowFullScreen
-          />
+          {session ? (
+            <>
+              <iframe
+                src={`https://embedmaster.link/v2kuqe45ne6onejhmq/movie/${id}`}
+                className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
+                style={{ backgroundSize: 100 }}
+                allowFullScreen
+              />
+              <TrackPlay mediaId={Number(id)} mediaType="movie" />
+            </>
+          ) : (
+            <WatchRequired backTo={`/movies/${id}`} />
+          )}
           <div className="mb-8">
             <p className="mb-2 text-lg font-medium">Reviews ({reviews.length})</p>
             <div className="max-h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar space-y-4">

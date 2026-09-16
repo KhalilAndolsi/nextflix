@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
+import { headers } from "next/headers";
 import { getData, streamingDetails } from "@/data/tmdb";
 import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
@@ -10,6 +11,7 @@ import Image from "next/image";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbTvDetails } from "@/types/tmdb";
 import SeriesStreamingController from "../_components/blocks/series-streaming-controller";
+import { auth } from "@/lib/auth";
 import { SITE_URL, TMDB_IMAGE_BASE_URL } from "@/lib/site";
 
 export async function generateMetadata({
@@ -69,6 +71,9 @@ export default async function SerieDetails({
     reviews,
   } = await streamingDetails("tv", Number(id));
   const data = results as TmdbTvDetails;
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "TVSeries",
@@ -114,12 +119,19 @@ export default async function SerieDetails({
   };
   return (
     <>
-      <Cover info={data} type="tv" />
+      <Cover info={data} type="tv" backTo={`/series/${id}`} />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-      <SeriesStreamingController info={{...data, seasons: data.seasons.filter(s => s.season_number !== 0)}} />
+      <SeriesStreamingController
+        info={{
+          ...data,
+          seasons: data.seasons.filter((s) => s.season_number !== 0),
+        }}
+        isLoggedIn={!!session}
+        backTo={`/series/${id}`}
+      />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <div className="mb-8">

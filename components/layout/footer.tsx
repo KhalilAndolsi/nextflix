@@ -32,7 +32,7 @@ export default function Footer() {
             <Link key={i} href={href} className="text-muted-foreground hover:text-foreground">{title}</Link>
           ))}
         </nav>
-        <p>© {new Date().getFullYear()}</p>
+        <p>© {new Date().getFullYear()} - created by <a href="https://github.com/KhalilAndolsi" target="_blank" rel="noopener noreferrer">khalil andolssi</a></p>
       </div>
     </footer>
   );
