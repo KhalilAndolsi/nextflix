@@ -60,7 +60,7 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             src={`https://image.tmdb.org/t/p/w500${info.backdrop_path}`}
             width={140}
             height={80}
-            alt="cover"
+            alt={`${info.title || info.name} backdrop`}
             className="object-cover object-center w-full aspect-video rounded-xl group-hover:mask-b-from-1 transition-all duration-300"
           />
           <div className="p-2">
@@ -92,7 +92,7 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             src={`https://image.tmdb.org/t/p/w500${info.poster_path}`}
             width={80}
             height={160}
-            alt="cover"
+            alt={`${info.title || info.name} poster`}
             className="object-cover object-center h-full rounded-xl"
           />
           <div className="px-2">

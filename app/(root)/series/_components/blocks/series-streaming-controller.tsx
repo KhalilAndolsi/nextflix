@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useQueryState, parseAsInteger } from "nuqs";
 import { revalidateMyPath } from "@/lib/revalidate-path";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { ArrowUpDown, SkipBack, SkipForward } from "lucide-react";
 import { cn } from "@/lib/utils";
 import WatchRequired from "@/components/features/watch-required";
@@ -35,17 +35,20 @@ export default function SeriesStreamingController({
   const [episode, setEpisode] = useQueryState("ep", parseAsInteger.withDefault(1));
   const [reverse, setReverse] = useState(false);
 
-  const fetchSeasonDetails = async (s: number) => {
-    const response = await fetch(
-      `/api/streaming/serie/${info.id}/season${s ? `?s=${s}` : ""}`
-    );
-    const data = await response.json();
-    setEpisodes(data.data as Episode[]);
-  };
+  const fetchSeasonDetails = useCallback(
+    async (s: number) => {
+      const response = await fetch(
+        `/api/streaming/serie/${info.id}/season${s ? `?s=${s}` : ""}`
+      );
+      const data = await response.json();
+      setEpisodes(data.data as Episode[]);
+    },
+    [info.id]
+  );
 
   useEffect(() => {
     fetchSeasonDetails(season);
-  }, [season]);
+  }, [fetchSeasonDetails, season]);
 
   const scrollRef = useRef<HTMLDivElement>(null);
   const episodeRefs = useRef(new Map<number, HTMLDivElement>());

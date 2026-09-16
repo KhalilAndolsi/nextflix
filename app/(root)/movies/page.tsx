@@ -33,9 +33,9 @@ export const metadata: Metadata = {
 
 export default async function MoviesPage() {
   const {trending, nowPlaying, popular, topRated, discover, upComing} = await getPageData("movie");
-  const genreOne = GENRES.movies[Math.floor(Math.random() * GENRES.movies.length-1)]
+  const genreOne = GENRES.movies[Math.floor(Math.random() * GENRES.movies.length)]
   const genreOneData = await getDiscover("movie", genreOne.id);
-  const genreTwo = GENRES.movies[Math.floor(Math.random() * GENRES.movies.length-1)]
+  const genreTwo = GENRES.movies[Math.floor(Math.random() * GENRES.movies.length)]
   const genreTwoData = await getDiscover("movie", genreTwo.id);
   return (
     <>

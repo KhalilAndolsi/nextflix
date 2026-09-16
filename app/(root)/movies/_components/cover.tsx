@@ -60,7 +60,7 @@ export default async function Cover({
     <section className="relative h-[70vh] max-h-[550px] transition-all duration-500 mb-8">
       <Image
         src={`https://media.themoviedb.org/t/p/w1920_and_h800_multi_faces${info.backdrop_path}`}
-        alt="backdrop"
+        alt={`${info.title || info.name} backdrop`}
         fill
         // objectFit="cover"
         sizes="100vw"
@@ -72,7 +72,7 @@ export default async function Cover({
           src={`https://image.tmdb.org/t/p/w500${info.poster_path}`}
           width={150}
           height={250}
-          alt="poster"
+          alt={`${info.title || info.name} poster`}
           className="!w-36 md:!w-60 xl:!w-70 aspect-2/3 rounded-xl shadow-[0_0_25px_2px_black]"
         />
         <div className="flex flex-col justify-end gap-2.5 md:gap-4">

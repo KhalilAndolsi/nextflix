@@ -85,20 +85,31 @@ export const getData = async (type: "movie" | "tv", id: number) => {
 };
 
 export const getLandingPageData = async () => {
-  const cover = await getTrending();
-  const moviesNowPlaying = await getMoviesNowPlaying();
-  const popularMovies = await getPopular("movie");
-  const popularSeries = await getPopular("tv");
+  const [
+    cover,
+    moviesNowPlaying,
+    popularMovies,
+    popularSeries,
+    topRatedSeries,
+    topRatedMovies,
+    upComingMovies,
+    discover,
+  ] = await Promise.all([
+    getTrending(),
+    getMoviesNowPlaying(),
+    getPopular("movie"),
+    getPopular("tv"),
+    getTopRated("tv"),
+    getTopRated("movie"),
+    getUpComingMovies(),
+    getDiscover("tv", null),
+  ]);
   const popular = [
     ...popularMovies.map((i) => ({ ...i, media_type: "movie" })),
     ...popularSeries.map((i) => ({ ...i, media_type: "tv" })),
   ]
     .sort((a, b) => b.vote_average - a.vote_average)
     .slice(0, 5) as TmdbResult[];
-  const topRatedSeries = await getTopRated("tv");
-  const topRatedMovies = await getTopRated("movie");
-  const upComingMovies = await getUpComingMovies();
-  const discover = await getDiscover("tv", null);
   return {
     cover,
     moviesNowPlaying,
@@ -113,16 +124,19 @@ export const getLandingPageData = async () => {
 };
 
 export const streamingDetails = async (type: "movie" | "tv", id: number) => {
-  const data= await getData(type, id);
-  const credits: Credits = (await http.get(`/3/${type}/${id}/credits`)).data;
-  const keywords = (await http.get(`/3/${type}/${id}/keywords`)).data[
-    type === "movie" ? "keywords" : "results"
-  ] as Genre[];
-  const videos = await getVideos(type, id);
-  const recommendations = await getRecommendations(type, id);
-  const similar = await getSimilar(type, id);
-  const images = await getImages(type, id);
-  const reviews = await getReviews(type, id);
+  const [data, credits, keywords, videos, recommendations, similar, images, reviews] =
+    await Promise.all([
+      getData(type, id),
+      http.get(`/3/${type}/${id}/credits`).then((r) => r.data as Credits),
+      http.get(`/3/${type}/${id}/keywords`).then((r) =>
+        (type === "movie" ? r.data.keywords : r.data.results) as Genre[]
+      ),
+      getVideos(type, id),
+      getRecommendations(type, id),
+      getSimilar(type, id),
+      getImages(type, id),
+      getReviews(type, id),
+    ]);
   return {
     data,
     credits,
@@ -156,16 +170,15 @@ export const getOnTheAir = async () => {
 };
 
 export const getPageData = async (type: "movie" | "tv") => {
-  const trending = await getTrending(type);
-  const nowPlaying =
-    type === "movie"
-      ? await getMoviesNowPlaying()
-      : await getSeriesAiringToday();
-  const popular = await getPopular(type);
-  const topRated = await getTopRated(type);
-  const discover = await getDiscover(type, null);
-  const upComing =
-    type === "movie" ? await getUpComingMovies() : await getOnTheAir();
+  const [trending, nowPlaying, popular, topRated, discover, upComing] =
+    await Promise.all([
+      getTrending(type),
+      type === "movie" ? getMoviesNowPlaying() : getSeriesAiringToday(),
+      getPopular(type),
+      getTopRated(type),
+      getDiscover(type, null),
+      type === "movie" ? getUpComingMovies() : getOnTheAir(),
+    ]);
   return { trending, nowPlaying, popular, topRated, discover, upComing };
 };
 

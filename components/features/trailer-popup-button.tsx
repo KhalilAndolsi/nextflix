@@ -54,12 +54,14 @@ export default function TrailerPopupButton({
               />
               <Button
                 disabled={currentTrailer === 0}
-                onClick={() => handleChangeTrailer(-1)}>
+                onClick={() => handleChangeTrailer(-1)}
+                aria-label="Previous trailer">
                 <ArrowLeft />
               </Button>
               <Button
                 disabled={currentTrailer === trailers.length - 1}
-                onClick={() => handleChangeTrailer(1)}>
+                onClick={() => handleChangeTrailer(1)}
+                aria-label="Next trailer">
                 <ArrowRight />
               </Button>
             </div>

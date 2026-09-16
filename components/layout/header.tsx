@@ -77,7 +77,7 @@ export default function Header() {
             </Link>
           ))}
         </nav>
-        <nav className="hidden lg:flex gap-2 items-center">
+        <nav className="flex gap-2 items-center">
           <button
             aria-label="search button"
             type="button"
@@ -157,27 +157,11 @@ export default function Header() {
             </DropdownMenuContent>
           </DropdownMenu>
         </nav>
-        <nav className="min-lg:hidden flex items-center justify-center">
-          <button
-            aria-label="search button"
-            type="button"
-            onClick={() => setSearchOpen(true)}
-            className={`${buttonVariants({ size: "icon", variant: "ghost" })}`}
-          >
-            <Search />
-          </button>
-          <button
-            aria-label="menu button"
-            type="button"
-            className="cursor-pointer px-2"
-          >
-            <Menu />
-          </button>
-        </nav>
         <Button
           type="button"
           onClick={handleScrollToUp}
           size="icon"
+          aria-label="Scroll to top"
           className={`fixed right-5 bottom-14 transition-all duration-300 ${
             showUpBtn ? "" : "opacity-10 scale-90 translate-y-36"
           }`}
