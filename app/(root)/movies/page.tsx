@@ -15,6 +15,8 @@ import {
 } from "@/components/blocks/skeletons";
 import { SITE_URL } from "@/lib/site";
 
+export const revalidate = 604800;
+
 export const metadata: Metadata = {
   title: "Movies",
   description:

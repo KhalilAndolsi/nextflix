@@ -9,7 +9,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import ImageWithFallback from "@/components/ui/image-with-fallback";
 import { useQueryState, parseAsInteger } from "nuqs";
 import { revalidateMyPath } from "@/lib/revalidate-path";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -18,16 +18,17 @@ import { cn } from "@/lib/utils";
 import WatchRequired from "@/components/features/watch-required";
 import TrackPlay from "@/components/features/track-play";
 import { BLUR_BACKDROP } from "@/lib/blur";
+import { useSession } from "@/lib/auth-client";
 
 export default function SeriesStreamingController({
   info,
-  isLoggedIn,
   backTo,
 }: {
   info: TmdbTvDetails;
-  isLoggedIn: boolean;
   backTo: string;
 }) {
+  const { data: session, isPending: isSessionPending } = useSession();
+  const isLoggedIn = !!session?.user;
   const [episodes, setEpisodes] = useState<Episode[]>([]);
   const [season, setSeason] = useQueryState(
     "s",
@@ -125,12 +126,15 @@ export default function SeriesStreamingController({
   return (
     <div className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3 mb-5">
       <div className="col-span-full lg:col-span-9">
-        {isLoggedIn ? (
+        {isSessionPending ? (
+          <div className="w-full aspect-video mx-auto rounded-xl bg-muted animate-pulse" />
+        ) : isLoggedIn ? (
           <>
             <iframe
               src={`https://embedmaster.link/v2kuqe45ne6onejhmq/tv/${info.id}/${season}/${episode}`}
               className="w-full aspect-video mx-auto rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
               style={{ backgroundSize: 100 }}
+              loading="lazy"
               allow="autoplay *; fullscreen *; picture-in-picture *; encrypted-media *"
               allowFullScreen
             />
@@ -220,10 +224,15 @@ export default function SeriesStreamingController({
                 <p className="[writing-mode:vertical-lr] text-center rotate-180">
                   {ep.episode_number}
                 </p>
-                <Image
-                  src={`https://image.tmdb.org/t/p/w500${ep.still_path}`}
+                <ImageWithFallback
+                  src={
+                    ep.still_path
+                      ? `https://image.tmdb.org/t/p/w300${ep.still_path}`
+                      : null
+                  }
                   width={120}
                   height={60}
+                  sizes="100px"
                   placeholder="blur"
                   blurDataURL={BLUR_BACKDROP}
                   className="w-[100px] h-auto aspect-video object-cover rounded-lg"

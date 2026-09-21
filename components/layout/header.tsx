@@ -1,11 +1,16 @@
 "use client";
 import Image from "next/image";
-import { useCallback, useEffect, useState, Suspense } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
+import dynamic from "next/dynamic";
 import Link from "next/link";
-import { ArrowBigUp, LogIn, LogOut, Menu, Search, User, UserPlus } from "lucide-react";
+import { ArrowBigUp, LogIn, LogOut, Search, User, UserPlus } from "lucide-react";
 import { Button, buttonVariants } from "../ui/button";
 import { Separator } from "../ui/separator";
-import SearchOverlay from "@/components/features/search-overlay";
+
+const SearchOverlay = dynamic(
+  () => import("@/components/features/search-overlay"),
+  { ssr: false }
+);
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,14 +38,19 @@ export default function Header() {
   };
 
   // Solution 1: Use useCallback to stabilize the function reference
+  const scrollTicking = useRef(false);
   const watchScrollEvent = useCallback(() => {
-    const shouldShow = window.scrollY >= 100;
-    setShowUpBtn(shouldShow);
+    if (scrollTicking.current) return;
+    scrollTicking.current = true;
+    requestAnimationFrame(() => {
+      setShowUpBtn(window.scrollY >= 100);
+      scrollTicking.current = false;
+    });
   }, []);
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      window.addEventListener("scroll", watchScrollEvent);
+      window.addEventListener("scroll", watchScrollEvent, { passive: true });
     }
     return () => window.removeEventListener("scroll", watchScrollEvent);
   }, [watchScrollEvent]);
@@ -174,9 +184,9 @@ export default function Header() {
           <ArrowBigUp className="fill-current" />
         </Button>
       </header>
-      <Suspense fallback={null}>
+      {searchOpen && (
         <SearchOverlay open={searchOpen} onClose={() => setSearchOpen(false)} />
-      </Suspense>
+      )}
     </>
   );
 }

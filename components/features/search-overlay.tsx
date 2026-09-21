@@ -215,7 +215,7 @@ function SearchResultRow({
       className="flex items-start gap-3 p-3 transition-colors hover:bg-accent/50 border-b border-border/50 last:border-0">
       {result.poster_path ? (
         <Image
-          src={`https://image.tmdb.org/t/p/w185${result.poster_path}`}
+          src={`https://image.tmdb.org/t/p/w92${result.poster_path}`}
           width={48}
           height={72}
           alt=""

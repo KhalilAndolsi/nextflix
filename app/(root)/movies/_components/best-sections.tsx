@@ -1,7 +1,7 @@
 "use client";
 import React, { useMemo } from "react";
 import { TmdbResult } from "@/types/tmdb";
-import Image from "next/image";
+import ImageWithFallback from "@/components/ui/image-with-fallback";
 import { BLUR_BACKDROP } from "@/lib/blur";
 import { Badge } from "@/components/ui/badge";
 import { getGenre } from "@/utils/getGenre";
@@ -15,12 +15,13 @@ import {
 import { Button, buttonVariants } from "@/components/ui/button";
 import ThumCard from "@/app/(root)/movies/_components/thum-card";
 
-import { Swiper, SwiperSlide } from "swiper/react";
-import { Autoplay, Navigation, EffectFade } from "swiper/modules";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/effect-fade";
+import dynamic from "next/dynamic";
 import Link from "next/link";
+
+const Swiper = dynamic(() => import("@/components/ui/swiper-client"), {
+  ssr: false,
+  loading: () => null,
+});
 
 export default function BestSections({
   main,
@@ -68,10 +69,56 @@ export default function BestSections({
         </div>
         <div className="w-full flex-1">
           <Swiper
+            slides={main.map((info) => (
+              <div
+                key={info.id}
+                className="relative size-full transition-all duration-500">
+                <ImageWithFallback
+                  src={
+                    info.backdrop_path
+                      ? `https://image.tmdb.org/t/p/w500${info.backdrop_path}`
+                      : null
+                  }
+                  fill
+                  // objectFit="cover"
+                  alt="movie-cover"
+                  placeholder="blur"
+                  blurDataURL={BLUR_BACKDROP}
+                  className="-z-10 size-full object-cover mask-b-from-10% rounded-xl"
+                />
+                <div className="p-4 h-full flex flex-col items-start justify-end gap-2">
+                  <Badge>{mainType === "movie" ? "Movie" : "Serie"}</Badge>
+                  <p className="text-3xl font-extrabold truncate max-w-xl">
+                    {info.title || info.name}
+                  </p>
+                  <p className="text-muted-foreground text-sm">
+                    {info.vote_average.toFixed(1)}{" "}
+                    <Star
+                      size={14}
+                      className="fill-amber-300 stroke-0 inline-block -translate-y-0.5"
+                    />{" "}
+                    | {getYear(info.release_date)} •{" "}
+                    {info.genre_ids
+                      .map((id) => getGenre("movies", id))
+                      .filter((g) => g !== "")
+                      .join(" • ")}
+                  </p>
+                  <p className="line-clamp-2 max-w-md">{info.overview}</p>
+                  <div className="flex max-sm:justify-center gap-4 mt-5">
+                    <Link href={`/${mainType === "movie" ? "movies" : "series"}/${info.id}`} className={buttonVariants()} >
+                      <CirclePlay /> Watch Now
+                    </Link>
+                    <Button variant="outline">
+                      <BookMarked /> Add Watchlist
+                    </Button>
+                  </div>
+                </div>
+              </div>
+            ))}
             slidesPerView={1}
             spaceBetween={10}
             className="h-full"
-            modules={[Autoplay, Navigation, EffectFade]}
+            modules={["autoplay", "navigation", "effectFade"]}
             autoplay={{
               delay: 5000,
               disableOnInteraction: false,
@@ -86,50 +133,8 @@ export default function BestSections({
               crossFade: true,
             }}
             speed={800}
-            loop>
-            {main.map((info) => (
-              <SwiperSlide key={info.id}>
-                <div className="relative size-full transition-all duration-500">
-                  <Image
-                    src={`https://image.tmdb.org/t/p/w500${info.backdrop_path}`}
-                    fill
-                    // objectFit="cover"
-                    alt="movie-cover"
-                    placeholder="blur"
-                    blurDataURL={BLUR_BACKDROP}
-                    className="-z-10 size-full object-cover mask-b-from-10% rounded-xl"
-                  />
-                  <div className="p-4 h-full flex flex-col items-start justify-end gap-2">
-                    <Badge>{mainType === "movie" ? "Movie" : "Serie"}</Badge>
-                    <p className="text-3xl font-extrabold truncate max-w-xl">
-                      {info.title || info.name}
-                    </p>
-                    <p className="text-muted-foreground text-sm">
-                      {info.vote_average.toFixed(1)}{" "}
-                      <Star
-                        size={14}
-                        className="fill-amber-300 stroke-0 inline-block -translate-y-0.5"
-                      />{" "}
-                      | {getYear(info.release_date)} •{" "}
-                      {info.genre_ids
-                        .map((id) => getGenre("movies", id))
-                        .filter((g) => g !== "")
-                        .join(" • ")}
-                    </p>
-                    <p className="line-clamp-2 max-w-md">{info.overview}</p>
-                    <div className="flex max-sm:justify-center gap-4 mt-5">
-                      <Link href={`/${mainType === "movie" ? "movies" : "series"}/${info.id}`} className={buttonVariants()} >
-                        <CirclePlay /> Watch Now
-                      </Link>
-                      <Button variant="outline">
-                        <BookMarked /> Add Watchlist
-                      </Button>
-                    </div>
-                  </div>
-                </div>
-              </SwiperSlide>
-            ))}
-          </Swiper>
+            loop
+          />
         </div>
       </div>
       <TopRated data={slideOne} type={slideOneType} title={slideOneTitle} />
@@ -176,11 +181,14 @@ const TopRated = ({
       </div>
       <div className="flex-1 overflow-hidden">
         <Swiper
+          slides={data.map((info) => (
+            <ThumCard key={info.id} info={info} varient="shortest" type={type} />
+          ))}
           direction="vertical"
           slidesPerView={3}
           spaceBetween={10}
           className="h-full parent-grayscale-effect"
-          modules={[Autoplay, Navigation]}
+          modules={["autoplay", "navigation"]}
           autoplay={{
             delay: 5000,
             disableOnInteraction: false,
@@ -193,15 +201,9 @@ const TopRated = ({
           }}
           speed={800}
           loop
-          slidesPerGroup={3}>
-          {data.map((info) => (
-            <SwiperSlide
-              key={info.id}
-              className="h-auto child-grayscale-effect">
-              <ThumCard info={info} varient="shortest" type={type} />
-            </SwiperSlide>
-          ))}
-        </Swiper>
+          slidesPerGroup={3}
+          slideClassName="h-auto child-grayscale-effect"
+        />
       </div>
     </div>
   );

@@ -11,13 +11,11 @@ import {
 } from "@/components/ui/tooltip";
 
 import dynamic from "next/dynamic";
-import { SwiperSlide } from "swiper/react";
 import { ThumsSlideSkeleton } from "@/components/blocks/skeletons";
-const Swiper = dynamic(() => import("swiper/react").then((d) => d.Swiper), {
+const Swiper = dynamic(() => import("@/components/ui/swiper-client"), {
   ssr: false,
-  loading: () => <ThumsSlideSkeleton />
-})
-import "swiper/css";
+  loading: () => <ThumsSlideSkeleton />,
+});
 
 type ThumSlideProps = {
   varient: "long" | "short";
@@ -100,13 +98,19 @@ export default function ThumsSlide({
             </Link>
           </div>
           {/* container: 640 - 768 - 1024 - 1280 - 1536  */}
-          <Swiper {...swiperCardsSize} grabCursor className="mask-r-from-90%">
-            {infos.map((info) => (
-              <SwiperSlide key={info.id}>
-                <ThumCard varient={varient} type={type || info.media_type} info={info} />
-              </SwiperSlide>
+          <Swiper
+            slides={infos.map((info) => (
+              <ThumCard
+                key={info.id}
+                varient={varient}
+                type={type || info.media_type}
+                info={info}
+              />
             ))}
-          </Swiper>
+            {...swiperCardsSize}
+            grabCursor
+            className="mask-r-from-90%"
+          />
         </section>
       }
     </>

@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import React from "react";
-import { headers } from "next/headers";
-import { getData, streamingDetails } from "@/data/tmdb";
+import { getData, getPageData, streamingDetails } from "@/data/tmdb";
 import Cover from "@/app/(root)/movies/_components/cover";
 import BilledCast from "@/components/blocks/billed-cast";
 import { LinkIcon, Star } from "lucide-react";
@@ -11,10 +10,16 @@ import Image from "next/image";
 import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
 import AutoSwiperSlideOfCards from "@/components/ui/auto-swiper-slide-of-cards";
 import { TmdbMovieDetails } from "@/types/tmdb";
-import WatchRequired from "@/components/features/watch-required";
+import PlayerGate from "@/components/features/player-gate";
 import TrackPlay from "@/components/features/track-play";
-import { auth } from "@/lib/auth";
 import { SITE_URL, TMDB_IMAGE_BASE_URL } from "@/lib/site";
+
+export const revalidate = 604800;
+
+export async function generateStaticParams() {
+  const { trending } = await getPageData("movie");
+  return trending.slice(0, 8).map((item) => ({ id: String(item.id) }));
+}
 
 export async function generateMetadata({
   params,
@@ -65,9 +70,6 @@ export default async function MovieDetails({
   const { data: results, credits, keywords, recommendations, similar, images, reviews } =
     await streamingDetails("movie", Number(id));
   const data = results as TmdbMovieDetails;
-  const session = await auth.api.getSession({
-    headers: await headers(),
-  });
   const jsonLd = {
     "@context": "https://schema.org",
     "@type": "Movie",
@@ -110,19 +112,16 @@ export default async function MovieDetails({
       />
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
-          {session ? (
-            <>
-              <iframe
-                src={`https://embedmaster.link/v2kuqe45ne6onejhmq/movie/${id}`}
-                className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
-                style={{ backgroundSize: 100 }}
-                allowFullScreen
-              />
-              <TrackPlay mediaId={Number(id)} mediaType="movie" />
-            </>
-          ) : (
-            <WatchRequired backTo={`/movies/${id}`} />
-          )}
+          <PlayerGate backTo={`/movies/${id}`}>
+            <iframe
+              src={`https://embedmaster.link/v2kuqe45ne6onejhmq/movie/${id}`}
+              className="w-full aspect-video mx-auto mb-5 rounded-xl bg-[url(/assets/images/no-vd.png)] bg-repeat bg-center"
+              style={{ backgroundSize: 100 }}
+              loading="lazy"
+              allowFullScreen
+            />
+            <TrackPlay mediaId={Number(id)} mediaType="movie" />
+          </PlayerGate>
           <div className="mb-8">
             <p className="mb-2 text-lg font-medium">Reviews ({reviews.length})</p>
             <div className="max-h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar space-y-4">
@@ -180,12 +179,13 @@ export default async function MovieDetails({
           <div className="mb-8">
             <p className="mb-2 text-lg font-medium">Backdrops</p>
             <AutoSwiperSlideOfCards
-              content={images.backdrops.map((image, i) => (
+              content={images.backdrops.slice(0, 12).map((image, i) => (
                 <Image
                   key={i}
-                  src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-                  width={image.width}
-                  height={image.height}
+                  src={`https://image.tmdb.org/t/p/w780${image.file_path}`}
+                  width={780}
+                  height={439}
+                  sizes="(max-width: 1200px) 50vw, 25vw"
                   alt="Backdrops"
                   placeholder="blur"
                   blurDataURL={BLUR_BACKDROP}
@@ -198,12 +198,13 @@ export default async function MovieDetails({
             <p className="mb-2 text-lg font-medium">Posters</p>
             <AutoSwiperSlideOfCards
               type="v"
-              content={images.posters.map((image, i) => (
+              content={images.posters.slice(0, 12).map((image, i) => (
                 <Image
                   key={i}
-                  src={`https://image.tmdb.org/t/p/w500${image.file_path}`}
-                  width={image.width}
-                  height={image.height}
+                  src={`https://image.tmdb.org/t/p/w342${image.file_path}`}
+                  width={342}
+                  height={513}
+                  sizes="(max-width: 786px) 33vw, (max-width: 1200px) 17vw, 12.5vw"
                   alt="Backdrops"
                   placeholder="blur"
                   blurDataURL={BLUR_POSTER}

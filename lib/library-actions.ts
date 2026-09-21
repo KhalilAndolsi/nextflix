@@ -37,6 +37,29 @@ export async function toggleLibrary(
   return { added: true };
 }
 
+export async function getLibraryStatus(
+  mediaId: number,
+  mediaType: "movie" | "tv"
+): Promise<{ watchlist: boolean; favorite: boolean }> {
+  const session = await auth.api.getSession({ headers: await headers() });
+  if (!session) return { watchlist: false, favorite: false };
+
+  const rows = await prisma.userMedia.findMany({
+    where: {
+      userId: session.user.id,
+      mediaType,
+      mediaId,
+      kind: { in: [MediaKind.WATCHLIST, MediaKind.FAVORITE] },
+    },
+    select: { kind: true },
+  });
+
+  return {
+    watchlist: rows.some((row) => row.kind === MediaKind.WATCHLIST),
+    favorite: rows.some((row) => row.kind === MediaKind.FAVORITE),
+  };
+}
+
 export async function recordHistory(
   mediaId: number,
   mediaType: "movie" | "tv",

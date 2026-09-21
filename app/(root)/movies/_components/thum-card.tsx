@@ -1,7 +1,7 @@
 import { TmdbResult } from "@/types/tmdb";
 import { getGenre } from "@/utils/getGenre";
 import { PlayCircle, Star } from "lucide-react";
-import Image from "next/image";
+import ImageWithFallback from "@/components/ui/image-with-fallback";
 import Link from "next/link";
 import React from "react";
 import { BLUR_POSTER, BLUR_BACKDROP } from "@/lib/blur";
@@ -19,16 +19,20 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
         <Link
           href={`/${type === "movie" ? "movies" : "series"}/${info.id}`}
           className="block w-full aspect-[2/3] relative overflow-hidden rounded-xl select-none group">
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${info.poster_path}`}
+          <ImageWithFallback
+            src={
+              info.poster_path
+                ? `https://image.tmdb.org/t/p/w342${info.poster_path}`
+                : null
+            }
             alt={info.title || info.name || "Movie poster"}
             fill
             // objectFit="cover"
-            sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+            sizes="(max-width: 682px) 50vw, (max-width: 1280px) 25vw, (max-width: 1536px) 17vw, 12.5vw"
             placeholder="blur"
             blurDataURL={BLUR_POSTER}
             className="object-center object-cover -z-10 mask-b-from-30% group-hover:mask-b-from-0% transition-transform duration-300"
-            quality={85}
+            quality={80}
           />
 
           <div className="size-full p-3 flex flex-col justify-end relative z-10">
@@ -59,11 +63,16 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
         <Link
           href={`/${type === "movie" ? "movies" : "series"}/${info.id}`}
           className="block group relative">
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${info.backdrop_path}`}
+          <ImageWithFallback
+            src={
+              info.backdrop_path
+                ? `https://image.tmdb.org/t/p/w342${info.backdrop_path}`
+                : null
+            }
             width={140}
             height={80}
             alt={`${info.title || info.name} backdrop`}
+            sizes="(max-width: 682px) 100vw, (max-width: 1280px) 50vw, 33vw"
             placeholder="blur"
             blurDataURL={BLUR_BACKDROP}
             className="object-cover object-center w-full aspect-video rounded-xl group-hover:mask-b-from-1 transition-all duration-300"
@@ -93,11 +102,16 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
         <Link
           href={`/${type === "movie" ? "movies" : "series"}/${info.id}`}
           className="flex items-start shrink max-w-full h-full overflow-hidden">
-          <Image
-            src={`https://image.tmdb.org/t/p/w500${info.poster_path}`}
+          <ImageWithFallback
+            src={
+              info.poster_path
+                ? `https://image.tmdb.org/t/p/w185${info.poster_path}`
+                : null
+            }
             width={80}
             height={160}
             alt={`${info.title || info.name} poster`}
+            sizes="80px"
             placeholder="blur"
             blurDataURL={BLUR_POSTER}
             className="object-cover object-center h-full rounded-xl"

@@ -1,12 +1,11 @@
 "use client";
 import dynamic from "next/dynamic";
-import { SwiperSlide } from "swiper/react";
 import { AutoSwiperSkeleton } from "../blocks/skeletons";
-const Swiper = dynamic(() => import("swiper/react").then((d) => d.Swiper), {
+
+const Swiper = dynamic(() => import("@/components/ui/swiper-client"), {
   ssr: false,
   loading: () => <AutoSwiperSkeleton />,
 });
-import "swiper/css";
 
 export default function AutoSwiperSlideOfCards({
   content,
@@ -17,6 +16,7 @@ export default function AutoSwiperSlideOfCards({
 }) {
   return (
     <Swiper
+      slides={content}
       slidesPerView={type === "h" ? 2 : 3}
       slidesPerGroup={type === "h" ? 2 : 3}
       spaceBetween={5}
@@ -41,10 +41,7 @@ export default function AutoSwiperSlideOfCards({
                 slidesPerGroup: 8,
               },
             }
-      }>
-      {content.map((item, i) => (
-        <SwiperSlide key={i}>{item}</SwiperSlide>
-      ))}
-    </Swiper>
+      }
+    />
   );
 }

@@ -69,8 +69,8 @@ export default function TrailerPopupButton({
           <style>{importantCss}</style>
         </>
       )}
-      <Button onClick={() => setIsOpen(true)}>
-        <CirclePlay /> Watch Trailer
+      <Button onClick={() => setIsOpen(true)} aria-label="Watch Trailer">
+        <CirclePlay /> <span className="hidden sm:inline">Watch Trailer</span>
       </Button>
     </>
   );
