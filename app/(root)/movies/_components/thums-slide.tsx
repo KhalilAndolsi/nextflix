@@ -4,11 +4,6 @@ import ThumCard from "@/app/(root)/movies/_components/thum-card";
 import { TmdbResult } from "@/types/tmdb";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 import dynamic from "next/dynamic";
 import { ThumsSlideSkeleton } from "@/components/blocks/skeletons";
@@ -79,22 +74,13 @@ export default function ThumsSlide({
       {
         <section className="relative px-4 lg:px-14 mt-10 overflow-hidden">
           <div className="mb-4 flex items-center justify-between">
-            <h3 className="text-lg md:text-2xl font-bold">{title}</h3>
-            <Link href={href}>
-              <span className="sr-only">{title}</span>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <button
-                    aria-label="see more"
-                    type="button"
-                    className="z-10 size-9 aspect-square lg:hover:bg-muted rounded-full cursor-pointer grid place-items-center lg:absolute lg:top-1/2">
-                    <ChevronRight size={20} strokeWidth={3} />
-                  </button>
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p className="font-medium">See more</p>
-                </TooltipContent>
-              </Tooltip>
+            <h2 className="text-lg md:text-2xl font-bold">{title}</h2>
+            <Link
+              href={href}
+              aria-label={`See more ${title}`}
+              className="z-10 size-9 aspect-square lg:hover:bg-muted rounded-full cursor-pointer grid place-items-center lg:absolute lg:top-1/2">
+              <span className="sr-only">See more {title}</span>
+              <ChevronRight size={20} strokeWidth={3} />
             </Link>
           </div>
           {/* container: 640 - 768 - 1024 - 1280 - 1536  */}

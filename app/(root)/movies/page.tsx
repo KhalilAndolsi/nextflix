@@ -26,10 +26,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
+    url: `${SITE_URL}/movies`,
     title: "Movies | Nextflix",
     description:
       "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films.",
     images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Movies | Nextflix",
+    description:
+      "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films.",
+    images: [`${SITE_URL}/assets/images/logo.png`],
   },
 };
 
@@ -41,6 +49,9 @@ export default async function MoviesPage() {
   const genreTwoData = await getDiscover("movie", genreTwo.id);
   return (
     <>
+      <h1 className="sr-only">
+        Movies — Watch & stream movies online in HD for free
+      </h1>
       <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection data={discover} />
       </Suspense>

@@ -40,20 +40,16 @@ export default function Footer() {
 
 const navLinks = [
   {
-    title: "home",
+    title: "Home",
     href: "/"
   },
   {
-    title: "Discover",
-    href: "/"
+    title: "Movies",
+    href: "/movies"
   },
   {
-    title: "Influence",
-    href: "/"
-  },
-  {
-    title: "Release",
-    href: "/"
+    title: "Series",
+    href: "/series"
   },
 ]
 

@@ -36,9 +36,9 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
           />
 
           <div className="size-full p-3 flex flex-col justify-end relative z-10">
-            <h5 className="text-xl font-bold truncate">
+            <h3 className="text-xl font-bold truncate">
               {info.title || info.name}
-            </h5>
+            </h3>
             <p className="text-sm">
               <Star
                 size={16}
@@ -78,7 +78,7 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             className="object-cover object-center w-full aspect-video rounded-xl group-hover:mask-b-from-1 transition-all duration-300"
           />
           <div className="p-2">
-            <h5 className="truncate font-bold">{info.title || info.name}</h5>
+            <h3 className="truncate font-bold">{info.title || info.name}</h3>
             <p className="text-sm">
               <Star
                 size={16}
@@ -117,7 +117,9 @@ export default function ThumCard({ varient, type, info }: ThumCardProps) {
             className="object-cover object-center h-full rounded-xl"
           />
           <div className="px-2">
-            <p className="truncate font-bold w-full">{info.title || info.name}</p>
+            <h3 className="truncate font-bold w-full">
+              {info.title || info.name}
+            </h3>
             <p className="text-sm">
               <Star
                 size={16}

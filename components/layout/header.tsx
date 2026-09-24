@@ -72,7 +72,7 @@ export default function Header() {
             src="/assets/images/logo.png"
             width={120}
             height={55}
-            alt="logo"
+            alt="Nextflix"
             placeholder="blur"
             blurDataURL={BLUR_BACKDROP}
             className="w-auto h-14"

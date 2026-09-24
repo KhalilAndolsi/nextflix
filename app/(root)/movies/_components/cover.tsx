@@ -57,9 +57,9 @@ export default async function Cover({
       />
         <div className="flex flex-col justify-end gap-2.5 md:gap-4">
           <Badge>{info.media_type === "tv" ? "Serie" : "Movie"}</Badge>
-          <p className="text-3xl lg:text-5xl font-extrabold lg:leading-16">
+          <h1 className="text-3xl lg:text-5xl font-extrabold lg:leading-16">
             {info.title || info.name}
-          </p>
+          </h1>
           <p className="text-sm">
             {info.vote_average.toFixed(1)}{" "}
             <Star

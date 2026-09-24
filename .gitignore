@@ -9,6 +9,7 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+/antigravity_global_skills
 
 # testing
 /coverage

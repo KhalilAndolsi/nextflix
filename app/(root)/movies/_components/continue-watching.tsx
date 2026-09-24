@@ -33,7 +33,7 @@ export default function ContinueWatching({
   return (
     <section className="relative px-4 lg:px-14 mt-10 overflow-hidden">
       <div className="mb-4">
-        <h3 className="text-lg md:text-2xl font-bold">{title}</h3>
+        <h2 className="text-lg md:text-2xl font-bold">{title}</h2>
       </div>
       <Swiper
         slides={items.map((item) => {

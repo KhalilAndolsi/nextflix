@@ -51,9 +51,9 @@ export default function BestSections({
     <section className="px-4 lg:px-14 mt-14 flex flex-wrap gap-5">
       <div className="rounded-xl h-[50vh] max-h-[550px] w-[100%] lg:w-auto lg:flex-2 overflow-hidden flex flex-col">
         <div className="py-4 flex items-center justify-between">
-          <p className="text-xl font-extrabold">
+          <h2 className="text-xl font-extrabold">
             {mainTitle ? mainTitle : "Up Coming"}
-          </p>
+          </h2>
           <div className="flex">
             <button
               type="button"
@@ -81,7 +81,7 @@ export default function BestSections({
                   }
                   fill
                   // objectFit="cover"
-                  alt="movie-cover"
+                  alt={`${info.title || info.name} backdrop`}
                   placeholder="blur"
                   blurDataURL={BLUR_BACKDROP}
                   className="-z-10 size-full object-cover mask-b-from-10% rounded-xl"
@@ -163,9 +163,9 @@ const TopRated = ({
   return (
     <div className="rounded-xl h-[50vh] max-h-[550px] w-[100%] md:flex-1 lg:w-auto overflow-hidden flex flex-col">
       <div className="py-4 flex items-center justify-between">
-        <p className="text-xl font-extrabold">
+        <h2 className="text-xl font-extrabold">
           {title ? title : `Top ${type === "movie" ? "Movies" : "Series"}`}
-        </p>
+        </h2>
         <div className="flex items-center justify-center">
           <button
             type="button"

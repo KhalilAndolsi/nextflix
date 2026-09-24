@@ -16,7 +16,7 @@ import { Separator } from "../ui/separator";
 export default function BilledCast({ casts }: { casts: CastMember[] }) {
   return (
     <div>
-      <p className="mb-4 text-lg font-medium">Top Billed Cast</p>
+      <h2 className="mb-4 text-lg font-medium">Top Billed Cast</h2>
       <Swiper
         slides={casts
           .filter((cast) => cast.profile_path)

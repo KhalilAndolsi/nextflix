@@ -3,15 +3,20 @@
 import * as React from "react"
 import { cva, type VariantProps } from "class-variance-authority"
 import { cn } from "@/lib/utils"
-import { Tabs as TabsPrimitive } from "radix-ui"
+import {
+  Tabs as TabsPrimitive,
+  TabsContent as TabsContentPrimitive,
+  TabsList as TabsListPrimitive,
+  TabsTrigger as TabsTriggerPrimitive,
+} from "@radix-ui/react-tabs"
 
 function Tabs({
   className,
   orientation = "horizontal",
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Root>) {
+}: React.ComponentProps<typeof TabsPrimitive>) {
   return (
-    <TabsPrimitive.Root
+    <TabsPrimitive
       data-slot="tabs"
       data-orientation={orientation}
       orientation={orientation}
@@ -43,10 +48,10 @@ function TabsList({
   className,
   variant = "default",
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.List> &
+}: React.ComponentProps<typeof TabsListPrimitive> &
   VariantProps<typeof tabsListVariants>) {
   return (
-    <TabsPrimitive.List
+    <TabsListPrimitive
       data-slot="tabs-list"
       data-variant={variant}
       className={cn(tabsListVariants({ variant }), className)}
@@ -58,9 +63,9 @@ function TabsList({
 function TabsTrigger({
   className,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Trigger>) {
+}: React.ComponentProps<typeof TabsTriggerPrimitive>) {
   return (
-    <TabsPrimitive.Trigger
+    <TabsTriggerPrimitive
       data-slot="tabs-trigger"
       className={cn(
         "relative inline-flex h-[calc(100%-1px)] flex-1 items-center justify-center gap-1.5 rounded-md border border-transparent px-2 py-1 text-sm font-medium whitespace-nowrap text-foreground/60 transition-all group-data-[orientation=vertical]/tabs:w-full group-data-[orientation=vertical]/tabs:justify-start hover:text-foreground focus-visible:border-ring focus-visible:ring-[3px] focus-visible:ring-ring/50 focus-visible:outline-1 focus-visible:outline-ring disabled:pointer-events-none disabled:opacity-50 group-data-[variant=default]/tabs-list:data-[state=active]:shadow-sm group-data-[variant=line]/tabs-list:data-[state=active]:shadow-none dark:text-muted-foreground dark:hover:text-foreground [&_svg]:pointer-events-none [&_svg]:shrink-0 [&_svg:not([class*='size-'])]:size-4",
@@ -77,9 +82,9 @@ function TabsTrigger({
 function TabsContent({
   className,
   ...props
-}: React.ComponentProps<typeof TabsPrimitive.Content>) {
+}: React.ComponentProps<typeof TabsContentPrimitive>) {
   return (
-    <TabsPrimitive.Content
+    <TabsContentPrimitive
       data-slot="tabs-content"
       className={cn("flex-1 outline-none", className)}
       {...props}

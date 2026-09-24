@@ -25,10 +25,18 @@ export const metadata: Metadata = {
   },
   openGraph: {
     type: "website",
+    url: `${SITE_URL}/series`,
     title: "Series | Nextflix",
     description:
       "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows.",
     images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Series | Nextflix",
+    description:
+      "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows.",
+    images: [`${SITE_URL}/assets/images/logo.png`],
   },
 };
 
@@ -41,6 +49,9 @@ export default async function SeriesPage() {
   const genreTwoData = await getDiscover("tv", genreTwo.id);
   return (
     <>
+      <h1 className="sr-only">
+        Series — Watch & stream TV series online in HD for free
+      </h1>
       <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection data={discover} />
       </Suspense>

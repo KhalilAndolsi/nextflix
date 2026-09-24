@@ -34,6 +34,11 @@ export async function GET(
       message: "fetched serie details",
       data: filtredEpisodes,
     },
-    { status: 200 }
+    {
+      status: 200,
+      headers: {
+        "Cache-Control": "public, max-age=43200, stale-while-revalidate=604800",
+      },
+    }
   );
 }

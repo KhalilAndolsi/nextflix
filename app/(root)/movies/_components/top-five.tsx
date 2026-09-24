@@ -10,6 +10,7 @@ const Swiper = dynamic(() => import("@/components/ui/swiper-client"), {
 import ImageWithFallback from "@/components/ui/image-with-fallback";
 import { Star } from "lucide-react";
 import Link from "next/link";
+import { getGenre } from "@/utils/getGenre";
 import { BLUR_POSTER } from "@/lib/blur";
 
 export default function TopFive({
@@ -22,7 +23,7 @@ export default function TopFive({
   return (
     <section className="relative px-4 lg:px-14 overflow-hidden mt-8">
       <div className="mb-8">
-        <h3 className="text-lg lg:text-2xl font-bold">Top 5 Evaluation</h3>
+        <h2 className="text-lg lg:text-2xl font-bold">Top 5 Evaluation</h2>
       </div>
       <Swiper
         slides={infos.map((info, i) => (
@@ -34,9 +35,9 @@ export default function TopFive({
                 : "series"
             }/${info.id}`}
             className="flex min-w-0">
-            <h5 className="grid place-items-center p-4 text-7xl font-bold flex-shrink-0">
+            <p className="grid place-items-center p-4 text-7xl font-bold flex-shrink-0">
               {i + 1}
-            </h5>
+            </p>
             <ImageWithFallback
               src={
                 info.poster_path
@@ -45,17 +46,24 @@ export default function TopFive({
               }
               width={80}
               height={140}
-              alt="Cover"
+              alt={`${info.title || info.name} poster`}
               sizes="100px"
               placeholder="blur"
               blurDataURL={BLUR_POSTER}
               className="w-[100px] h-auto aspect-[2/3] rounded-xl flex-shrink-0"
             />
             <div className="p-4 flex flex-col justify-end flex-1 min-w-0">
-              <h6 className="font-bold text-lg truncate min-w-0">
+              <h3 className="font-bold text-lg truncate min-w-0">
                 {info.title || info.name}
-              </h6>
-              <p>Herro - Action</p>
+              </h3>
+              <p>
+                {getGenre(
+                  type === "movie" || info.media_type === "movie"
+                    ? "movies"
+                    : "series",
+                  info.genre_ids[0]
+                ) || "Trending"}
+              </p>
               <p className="space-x-3">
                 <span>
                   <Star

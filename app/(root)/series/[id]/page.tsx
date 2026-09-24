@@ -29,8 +29,9 @@ export async function generateMetadata({
   try {
     const data = (await getData("tv", Number(id))) as TmdbTvDetails;
     const title = data.name || data.title;
-    const description =
-      data.tagline || (data.overview ? data.overview.slice(0, 160) : undefined);
+    const description = data.overview
+      ? data.overview.slice(0, 160)
+      : data.tagline;
     const image = data.backdrop_path || data.poster_path
       ? `${TMDB_IMAGE_BASE_URL}/w1280${data.backdrop_path || data.poster_path}`
       : `${SITE_URL}/assets/images/logo.png`;
@@ -149,9 +150,9 @@ export default async function SerieDetails({
       <section className="grid grid-cols-12 w-full px-4 lg:px-14 gap-3">
         <div className="col-span-full lg:col-span-9">
           <div className="mb-8">
-            <p className="mb-2 text-lg font-medium">
+            <h2 className="mb-2 text-lg font-medium">
               Reviews ({reviews.length})
-            </p>
+            </h2>
             <div className="max-h-[400px] overflow-hidden overflow-y-auto hidden-scrollbar space-y-4">
               {reviews.length > 0 ? (
                 reviews.map((review) => (
@@ -168,7 +169,7 @@ export default async function SerieDetails({
                           }
                           width={40}
                           height={40}
-                          alt="pfp"
+                          alt={review.author ? `${review.author} avatar` : "Reviewer avatar"}
                           placeholder="blur"
                           blurDataURL={BLUR_POSTER}
                           className="bg-primary rounded-full"
@@ -207,7 +208,7 @@ export default async function SerieDetails({
             </div>
           </div>
           <div className="mb-8">
-            <p className="mb-2 text-lg font-medium">Backdrops</p>
+            <h2 className="mb-2 text-lg font-medium">Backdrops</h2>
             <AutoSwiperSlideOfCards
               content={images.backdrops.slice(0, 12).map((image, i) => (
                 <Image
@@ -216,7 +217,7 @@ export default async function SerieDetails({
                   width={780}
                   height={439}
                   sizes="(max-width: 1200px) 50vw, 25vw"
-                  alt="Backdrops"
+                  alt={`${data.name || data.title} backdrop ${i + 1}`}
                   placeholder="blur"
                   blurDataURL={BLUR_BACKDROP}
                   className="object-cover"
@@ -225,7 +226,7 @@ export default async function SerieDetails({
             />
           </div>
           <div className="mb-8">
-            <p className="mb-2 text-lg font-medium">Posters</p>
+            <h2 className="mb-2 text-lg font-medium">Posters</h2>
             <AutoSwiperSlideOfCards
               type="v"
               content={images.posters.slice(0, 12).map((image, i) => (
@@ -235,7 +236,7 @@ export default async function SerieDetails({
                   width={342}
                   height={513}
                   sizes="(max-width: 786px) 33vw, (max-width: 1200px) 17vw, 12.5vw"
-                  alt="Backdrops"
+                  alt={`${data.name || data.title} poster ${i + 1}`}
                   placeholder="blur"
                   blurDataURL={BLUR_POSTER}
                   className="object-cover"

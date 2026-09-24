@@ -60,30 +60,34 @@ export default async function HomePage() {
 
   return (
     <>
+      <h1 className="sr-only">
+        {site.name} — {site.tagline}
+      </h1>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            name: site.name,
+            url: SITE_URL,
+            description: site.description,
+            publisher: {
+              "@type": "Organization",
+              name: site.name,
+              url: SITE_URL,
+              logo: {
+                "@type": "ImageObject",
+                url: `${SITE_URL}/assets/images/logo.png`,
+              },
+            },
+          }),
+        }}
+      />
       <Suspense fallback={<HeroSectionSkeleton />}>
         <HeroSection data={cover} />
       </Suspense>
       <ContinueWatchingSection />
-      {/* <InfiniteSlider
-        speed={60}
-        gap={30}
-        className="items-center mask-x-from-80%">
-        {[1, 2, 3, 4, 5, 6, 7, 8, 1, 2, 3, 4, 5, 6, 7, 8].map((n, i) => (
-          <Image
-            key={i}
-            src={`/assets/images/brands/m${n}.png`}
-            width={120}
-            height={60}
-            priority={i < 8}
-            loading={i < 8 ? "eager" : "lazy"}
-            decoding="async"
-            alt={`Brand ${n} logo`}
-            className="h-auto w-24 lg:w-30 xl:w-34 object-cover"
-            style={{ contentVisibility: "auto" }}
-          />
-        ))}
-      </InfiniteSlider>*/}
-      {/*//TODO: fix InfiniteSlider Problem  */}
       <Suspense fallback={<ThumsSlideSkeleton />}>
         <ThumsSlide
           varient="long"
