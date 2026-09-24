@@ -29,14 +29,14 @@ export const metadata: Metadata = {
     title: "Series | Nextflix",
     description:
       "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows.",
-    images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+    images: [{ url: `${SITE_URL}/assets/images/cover.png`, width: 1200, height: 630, alt: "Nextflix" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Series | Nextflix",
     description:
       "Browse and stream TV series online in HD for free. Popular, trending and top-rated shows.",
-    images: [`${SITE_URL}/assets/images/logo.png`],
+    images: [`${SITE_URL}/assets/images/cover.png`],
   },
 };
 

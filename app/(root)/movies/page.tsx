@@ -30,14 +30,14 @@ export const metadata: Metadata = {
     title: "Movies | Nextflix",
     description:
       "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films.",
-    images: [{ url: `${SITE_URL}/assets/images/logo.png`, width: 1200, height: 630, alt: "Nextflix" }],
+    images: [{ url: `${SITE_URL}/assets/images/cover.png`, width: 1200, height: 630, alt: "Nextflix" }],
   },
   twitter: {
     card: "summary_large_image",
     title: "Movies | Nextflix",
     description:
       "Browse and stream movies online in HD for free. Now playing, popular, trending and top-rated films.",
-    images: [`${SITE_URL}/assets/images/logo.png`],
+    images: [`${SITE_URL}/assets/images/cover.png`],
   },
 };
 
