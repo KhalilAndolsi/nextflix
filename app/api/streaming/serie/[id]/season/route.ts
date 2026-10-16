@@ -2,7 +2,7 @@ import { getData, getEpisodes } from "@/data/tmdb";
 import { Episode, TmdbTvDetails } from "@/types/tmdb";
 import { NextResponse, NextRequest } from "next/server";
 
-export const runtime = "edge";
+// export const runtime = "edge";
 
 export async function GET(
   req: NextRequest,
